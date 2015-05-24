@@ -69,7 +69,7 @@ $(function() {
 				if (isNaN(Number(offTime.val())) || Math.floor(Number(offTime.val())) <= 0) {   //输入非法字符提示重新输入
 					alert('请重新输入定时时间');
 				} else {
-					offTimeFlag = send['offTime'] = offTime.val() || 0;  //保存定时器值
+					offTimeFlag = send['offTime'] = Math.floor(Number(offTime.val())) || 0;  //保存定时器值
 					timeTrigger.hide();
 				}
 			}
