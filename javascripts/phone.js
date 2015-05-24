@@ -66,7 +66,7 @@ $(function() {
 	offTimeCheck.on('click', function() {
 		if (isOn()) {
 			if (time.html() === '关') {      //只有在此状态下才能进入开启定时器
-				if (Number(offTime.val()) == 0 || isNaN(Number(offTime.val()))) {   //输入非法字符提示重新输入
+				if (isNaN(Number(offTime.val())) || Math.floor(Number(offTime.val())) <= 0) {   //输入非法字符提示重新输入
 					alert('请重新输入定时时间');
 				} else {
 					offTimeFlag = send['offTime'] = offTime.val() || 0;  //保存定时器值
