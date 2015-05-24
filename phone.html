@@ -1,0 +1,37 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport", content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui")
+		<meta name="apple-mobile-web-app-capable", content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style", content="black" />
+		<meta name="format-detection" content="telephone=no" />
+		<title>手机显示</title>
+		<link rel="stylesheet" href="./styles/phone.css" type="text/css" />
+	</head>
+	<body>
+		<ul>
+			<li><div>状态：<span id="switch">开</span></div></li>
+			<li>
+				<div id="wendu">
+				温度：
+				<span id="up">上升</span>
+				<span id="down">下降</span>
+				</div>
+			</li>
+			<li><div>风向：<span id="feng">上下扫风</span></div></li>
+			<li><div>模式：<span id="moshi">制热</span></div></li>
+			<li><div>除湿：<span id="chushi">开</span></div></li>
+			<li>
+				<div>
+					<div>定时关机：<span id="time">开</span></div>
+					<div id="timeTrigger">
+						<input type="text" id="offTime" placeholder="请输入定时时间"/>  分钟 <button id="offTimeCheck">确认</button>
+					</div>
+				</div>
+			</li>
+		</ul>
+		<script type="text/javascript" src="./javascripts/zepto.min.js"></script>
+		<script type="text/javascript" src="./javascripts/phone.js"></script>
+	</body>
+</html>

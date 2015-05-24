@@ -1,0 +1,161 @@
+@charset "UTF-8";
+/* line 17, ../../../../../../../usr/share/compass/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+/* line 22, ../../../../../../../usr/share/compass/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html {
+  line-height: 1;
+}
+
+/* line 24, ../../../../../../../usr/share/compass/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 26, ../../../../../../../usr/share/compass/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 28, ../../../../../../../usr/share/compass/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* line 30, ../../../../../../../usr/share/compass/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: none;
+}
+/* line 103, ../../../../../../../usr/share/compass/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+/* line 32, ../../../../../../../usr/share/compass/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+a img {
+  border: none;
+}
+
+/* line 116, ../../../../../../../usr/share/compass/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+  display: block;
+}
+
+/**
+ * ---------- Font ----------
+ */
+/**
+ * 去掉一个值的单位，如12px => 12
+ * eg. strip-units(12px) => 12
+ */
+/**
+ * 基于HTML的相对宽度 以需求大小 / 32px
+ * 此函数对项目的响应式布局非常关键
+ * @param $px int 相对的字体大小
+ */
+/**
+ * 不同设备宽度时的html文档根的字体大小
+ * 在编码中推荐使用基于html文档字体大小的pxToRem()函数去声明元素的大小
+ * 字体的line-height 可以使用em（相对于字体大小的）
+ */
+@media screen and (min-width: 640px) {
+  /* line 32, _base.scss */
+  html {
+    font-size: 32px;
+  }
+}
+@media screen and (min-width: 360px) and (max-width: 639px) {
+  /* line 32, _base.scss */
+  html {
+    font-size: 18px;
+  }
+}
+@media screen and (max-width: 359px) {
+  /* line 32, _base.scss */
+  html {
+    font-size: 16px;
+  }
+}
+/* line 3, phone.scss */
+* {
+  padding: 0;
+  margin: 0;
+  font-size: 1.875rem;
+}
+
+/* line 8, phone.scss */
+body {
+  min-width: 17.5rem;
+  line-height: 1.5em;
+  font-family: 'Hiragino Sans GB',Arial,SimSun,'WenQuanYi Micro Hei',sans-serif;
+  background-color: #2ca2af;
+  position: absolute;
+  left: 50%;
+  margin-left: -8.75rem;
+  font-size: 1.875rem;
+}
+
+/* line 18, phone.scss */
+ul {
+  margin-top: 3.125rem;
+}
+/* line 21, phone.scss */
+ul li {
+  margin-bottom: 1.25rem;
+  padding: 0.0625rem 0.0625rem;
+  border: 0.125rem solid #bbffbb;
+  border-radius: 0.3125rem;
+}
+/* line 27, phone.scss */
+ul li + div {
+  margin: 0.0625rem 0.15625rem;
+  padding: 0.0625rem 0.0625rem;
+}
+/* line 31, phone.scss */
+ul li span {
+  color: #bbffbb;
+}
+/* line 34, phone.scss */
+ul li button {
+  border-radius: 0.3125rem;
+  background-color: lemonchiffon;
+}
+
+/* line 40, phone.scss */
+input {
+  height: 1.875rem;
+  width: 6.25rem;
+  border-radius: 0.3125rem;
+  font-size: 0.8125rem;
+  vertical-align: top;
+  margin-top: 0.46875rem;
+  text-indent: 0.46875rem;
+}
+
+/* line 48, phone.scss */
+#timeTrigger {
+  display: none;
+}

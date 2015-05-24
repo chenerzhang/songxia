@@ -1,0 +1,38 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>空调显示</title>
+		<link rel="stylesheet" href="./styles/phone.css" type="text/css" />
+		<style type="text/css">
+			body {
+				font-size: 1.5rem;
+			}
+			ul {
+				margin-top: 0;
+			}
+			ul li {
+				margin-bottom: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<ul>
+			<li><div>状态：<span id="switch">开</span></div></li>
+			<li><div>温度：<span id="wendu">20</span>摄氏度</div></li>
+			<li><div>风向：<span id="feng">左右扫风</span></div></li>
+			<li><div>模式：<span id="moshi">制冷</span></div></li>
+			<li><div>除湿：<span id="chushi">开</span></div></li>
+			<li>
+				<div>
+					<div>定时关机：<span id="time">开</span></div>
+					<div id="timeTrigger">
+						<span id="offTime">0</span>分钟后将自动关机
+					</div>
+				</div>
+			</li>
+		</ul>
+		<script type="text/javascript" src="./javascripts/zepto.min.js"></script>
+		<script type="text/javascript" src="./javascripts/air.js"></script>
+	</body>
+</html>
