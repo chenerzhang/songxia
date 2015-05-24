@@ -1,15 +1,15 @@
 <?php
-	// @$fpw = fopen("wendu.txt", 'w');
-	// if (!$fpw) {
-	// 	echo 0;
-	// 	exit();
-	// }
-	// //flock($fpw, LOCK_EX);
-	// if (isset($_POST['wendu'])) {
-	// 	fwrite($fpw, $_POST['wendu']);
-	// }
-	// //flock($fpw, LOCK_UN);
-	// fclose($fpw);
+	@$fpw = fopen("wendu.txt", 'w');     //以覆盖方式写入wendu值
+	if (!$fpw) {
+		echo 0;
+		exit();
+	}
+	//flock($fpw, LOCK_EX);
+	if (isset($_POST['wendu'])) {
+		fwrite($fpw, $_POST['wendu']);
+	}
+	//flock($fpw, LOCK_UN);
+	fclose($fpw);
 	@$fp = fopen("data.txt", 'r+'); //读取指令
 	if (!$fp) {
 		echo 0;

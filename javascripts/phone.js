@@ -26,7 +26,7 @@ $(function() {
 		if (isOn()) wendu--;   //点击降温则wendu--
 	});
 	var xianshi = $('#xianshi');
-	print();
+	getWendu();                    //初始化wendu
 	var feng = $('#feng');  //扫风模式
 	feng.on('click', function() {
 		if (isOn()) {
@@ -90,7 +90,6 @@ $(function() {
 			$.post('/songxia/fn1.php', data, function(response) {
 				if (response != 0) {  //若得到的response为1说明指令成功得到保存，则将send赋值为空数组，wendu赋值为0,
 					send = [];		//否则send和wendu值不变，以便下一次发送
-					if (wendu != 0) print(wendu);
 					wendu = 0;
 				}
 			});
@@ -108,24 +107,22 @@ $(function() {
 				offFlag = 0;   //赋值offFlag为0
 			}
 		}
-	}, 5000);
-	function print(wendu) {   //输出温度函数
-		var tmp = Number(getLocalStorage()) + (wendu ? wendu : 0);
-		xianshi.html(tmp > 32 ? 32 : (tmp < 16 ? 16 : tmp));
-		setLocalStorage(tmp);
-	}
+	}, 10000);
+	setInterval(function() {    //1S收一次服务器端存储的wendu
+		getWendu();
+	}, 1000);
 	function isOn() {       //判断是否是开机状态，是返回true， 否返回false
 		return onOff.html() == '开' ? false : true;
 	}
 	function isOff() {     //判断是否是关机状态
 		return !isOn();
 	}
-	function setLocalStorage(cookie) {         //将wendu值保存到localStorage内
-		localStorage['wendu'] = cookie > 32 ? 32 : (cookie < 16 ? 16 : cookie);
-	}
-	function getLocalStorage() {         //得到localStorage内的wendu值，没有则初始化为20
-		return isNaN(localStorage['wendu']) ? 20 : localStorage['wendu'];
-	}
+	// function setLocalStorage(cookie) {         //将wendu值保存到localStorage内
+	// 	localStorage['wendu'] = cookie > 32 ? 32 : (cookie < 16 ? 16 : cookie);
+	// }
+	// function getLocalStorage() {         //得到localStorage内的wendu值，没有则初始化为20
+	// 	return isNaN(localStorage['wendu']) ? 20 : localStorage['wendu'];
+	// }
 	function getM(dateMax, dateMin) {        //得到两个时间点的分钟差
 		var hour = dateMax.getHours();
 		if (dateMax.getDate() < dateMin.getDate()) {
@@ -133,5 +130,13 @@ $(function() {
 		}
 		hour -= dateMin.getHours();
 		return Number(hour) * 60 + Number(dateMax.getMinutes()) - Number(dateMin.getMinutes());
+	}
+	function getWendu() {
+		$.post('/songxia/fn3.php', '', function(response) {
+			console.log(response);
+			if (Number(response) !== 0 && !isNaN(Number(response))) {
+				xianshi.html(Number(response));
+			}
+		});
 	}
 })

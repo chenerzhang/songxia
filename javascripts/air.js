@@ -19,10 +19,9 @@ $(function() {
 	var timeFlag = 0;   																	//用来记录得到定时指令后的当前时间
 	var data = init();    																	//从cookie里读取关机或发生故障之前的历史记录
 	check();                 																	//判断wendu和定时器
-	print();                  																	//输出函数
-	var send = 'wendu=' + wendu.html();
+	print();
 	setInterval(function() {                      												//每隔1S发送一次ajax，用来获取指令
-		$.post('/songxia/fn2.php', send, function(response) {
+		$.post('/songxia/fn2.php', 'wendu=' + wendu.html(), function(response) {
 			console.log(response);
 			if (response !== '') {              												//指令不为空
 				var resarr = getData(response);         									//反格式化response eg:response='onOff=0&moshi=1' resarr=['onOff':0, 'moshi':1]

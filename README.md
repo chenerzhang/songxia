@@ -3,4 +3,5 @@
 其中phone.html用来在手机端模拟空调遥控器，具备发送指令到服务器功能
 air.html用来在电脑端模拟空调，收到指令后完成相应动作
 fn1.php用来接收phone.html发送的指令并且保存到data.txt内
-fn2.php用来读取data.txt内的指令并通过air.html发送的ajax请求回指令
+fn2.php用来存储wendu值值wendu.txt内，然后读取data.txt内的指令并通过air.html发送的ajax请求回指令
+fn3.php用来读取wendu.txt内的wendu值
