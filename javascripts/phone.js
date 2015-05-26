@@ -9,6 +9,10 @@
 */
 $(function() {
 	var offTimeFlag = 0, offFlag = 0;   //ofTimeFlag记录定时器开时定时时间，offFlag用来记录开启定时器的当前时间
+	var guzhangFlag = 0, guzhangFlagOld = 0;
+	var ul = $('ul'), p = $('p');
+	p.hide();
+	getWendu(1);
 	var send = [];     //发送的指令保存在这个数组里
 	var onOff = $('#switch');
 	onOff.on('click', function(e) {    //点击空调开关
@@ -75,7 +79,7 @@ $(function() {
 			}
 		}
 	})
-	setInterval(function() {   //每隔1S则进入一遍此函数
+	var sendInterval = setInterval(function() {   //每隔1S则进入一遍此函数
 		var data = '';   //要发送的数据
 		for (var i in send) {   //send数组内有值则格式化至data内  eg:send['feng':0, 'moshi':1],则data = 'feng=0&moshi=1&'
 			data += i + '=' + send[i] + '&';
@@ -95,7 +99,7 @@ $(function() {
 			});
 		}
 	}, 1000);
-	setInterval(function() {
+	var offTimeInterval = setInterval(function() {
 		if (isOff()) offFlag = 0;    //若为关机，则offFlag总为0
 		if (time.html() === '关' && isOn() && offFlag === 0) {     //开机状态下开启定时器且offFlag为0则赋值offFlag为当前定时时间
 			offFlag = new Date();
@@ -108,21 +112,18 @@ $(function() {
 			}
 		}
 	}, 10000);
-	setInterval(function() {    //1S收一次服务器端存储的wendu
-		getWendu();
+	var wenduInterval = setInterval(function() {    //1S收一次服务器端存储的wendu
+		getWendu(0);
 	}, 1000);
+	setInterval(function() {    //1S收一次服务器端存储的wendu
+		getWendu(1);
+	}, 10000);
 	function isOn() {       //判断是否是开机状态，是返回true， 否返回false
 		return onOff.html() == '开' ? false : true;
 	}
 	function isOff() {     //判断是否是关机状态
 		return !isOn();
 	}
-	// function setLocalStorage(cookie) {         //将wendu值保存到localStorage内
-	// 	localStorage['wendu'] = cookie > 32 ? 32 : (cookie < 16 ? 16 : cookie);
-	// }
-	// function getLocalStorage() {         //得到localStorage内的wendu值，没有则初始化为20
-	// 	return isNaN(localStorage['wendu']) ? 20 : localStorage['wendu'];
-	// }
 	function getM(dateMax, dateMin) {        //得到两个时间点的分钟差
 		var hour = dateMax.getHours();
 		if (dateMax.getDate() < dateMin.getDate()) {
@@ -131,11 +132,22 @@ $(function() {
 		hour -= dateMin.getHours();
 		return Number(hour) * 60 + Number(dateMax.getMinutes()) - Number(dateMin.getMinutes());
 	}
-	function getWendu() {
-		$.post('/songxia/fn3.php', '', function(response) {
-			console.log(response);
-			if (Number(response) !== 0 && !isNaN(Number(response))) {
+	function getWendu(flag) {
+		if (flag) guzhangFlagOld = guzhangFlag;
+		$.post('/songxia/fn3.php', 'flag=' + flag, function(response) {
+			if (!!response && Number(response) !== 0 && !isNaN(Number(response))) {
+				if (flag) guzhangFlag = 0;
+				if (guzhangFlag != guzhangFlagOld && flag == 1) {
+					ul.show();
+					p.hide();
+				}
 				xianshi.html(Number(response));
+			} else {
+				if (flag) guzhangFlag = 1;
+				if (guzhangFlag != guzhangFlagOld && flag == 1) {
+					ul.hide();
+					p.show();
+				}
 			}
 		});
 	}

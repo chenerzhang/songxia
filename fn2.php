@@ -4,11 +4,11 @@
 		echo 0;
 		exit();
 	}
-	//flock($fpw, LOCK_EX);
+	flock($fpw, LOCK_EX);
 	if (isset($_POST['wendu'])) {
 		fwrite($fpw, $_POST['wendu']);
 	}
-	//flock($fpw, LOCK_UN);
+	flock($fpw, LOCK_UN);
 	fclose($fpw);
 	@$fp = fopen("data.txt", 'r+'); //读取指令
 	if (!$fp) {
