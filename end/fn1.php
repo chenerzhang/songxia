@@ -1,5 +1,5 @@
 <?php
-	@$fp=fopen("data.txt",'a+');  //以追加形式写入data.txt
+	@$fp=fopen("data.txt",'a+'); 	 //以追加形式写入data.txt
 	//访问文件失败则输出0
 	if (!$fp) {
 		echo 0;

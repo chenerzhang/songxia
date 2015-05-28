@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=320, initial-scale=1"/>
+	<meta charset="utf-8" />
+	<title>jsmpeg streaming</title>
+	<link rel="stylesheet" href="../styles/phone.css" />
+	<style type="text/css">
+		body {
+			text-align: center;
+			margin-left: -10rem;
+		}
+		#videoCanvas {
+			/* Always stretch the canvas to 640x480, regardless of its
+			internal size. */
+			width: 20rem;
+  			height: 15rem;
+			margin-top: 10%;
+		}
+	</style>
+</head>
+<body>
+	<!-- The Canvas size specified here is the "initial" internal resolution. jsmpeg will
+		change this internal resolution to whatever the source provides. The size the
+		canvas is displayed on the website is dictated by the CSS style.
+	-->
+	<canvas id="videoCanvas">
+		<p>
+			Please use a browser that supports the Canvas Element, like
+			<a href="http://www.google.com/chrome">Chrome</a>,
+			<a href="http://www.mozilla.com/firefox/">Firefox</a>,
+			<a href="http://www.apple.com/safari/">Safari</a> or Internet Explorer 10
+		</p>
+	</canvas>
+	<p><a href="/songxia/phone.html" style="text-decoration: none;">返回</a></p>
+	<script type="text/javascript" src="jsmpg.js"></script>
+	<script type="text/javascript" src="../javascripts/zepto.min.js"></script>
+	<script type="text/javascript">
+		//ffmpeg -s 640x480 -f video4linux2 -i /dev/video0 -f mpeg1video -b 800k -r 30 http://127.0.0.1:8082/123456/640/480/
+		// Show loading notice
+		$.post('/songxia/end/fn4.php', {'passwd': sessionStorage.getItem('admin')}, function(res) {   //判断是否登陆，否则重定向至登陆界面
+			if (res != 1) {
+				window.location = '/songxia/index.html';
+			}
+		});
+		var canvas = document.getElementById('videoCanvas');
+		var ctx = canvas.getContext('2d');
+		ctx.fillStyle = '#444';
+		ctx.fillText('Loading...', canvas.width/2-30, canvas.height/3);
+
+		// Setup the WebSocket connection and start the player
+		var client = new WebSocket( 'ws://127.0.0.1:8084/' );
+		var player = new jsmpeg(client, {canvas:canvas});
+	</script>
+</body>
+</html>

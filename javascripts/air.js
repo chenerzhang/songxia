@@ -21,7 +21,7 @@ $(function() {
 	check();                 																	//判断wendu和定时器
 	print();
 	setInterval(function() {                      												//每隔1S发送一次ajax，用来获取指令
-		$.post('/songxia/fn2.php', 'wendu=' + wendu.html(), function(response) {
+		$.post('/songxia/end/fn2.php', 'wendu=' + wendu.html(), function(response) {
 			console.log(response);
 			if (response !== '') {              												//指令不为空
 				var resarr = getData(response);         									//反格式化response eg:response='onOff=0&moshi=1' resarr=['onOff':0, 'moshi':1]
