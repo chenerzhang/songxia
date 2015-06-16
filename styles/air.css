@@ -120,7 +120,7 @@ body {
 
 /* line 18, phone.scss */
 ul {
-  margin-top: 2rem;
+  margin-top: 3.125rem;
 }
 /* line 21, phone.scss */
 ul li {
@@ -142,65 +142,4 @@ ul li span {
 ul li button {
   border-radius: 0.3125rem;
   background-color: lemonchiffon;
-}
-
-/* line 40, phone.scss */
-input {
-  height: 1.875rem;
-  width: 6.25rem;
-  border-radius: 0.3125rem;
-  font-size: 0.8125rem;
-  vertical-align: top;
-  margin-top: 0.46875rem;
-  text-indent: 0.46875rem;
-}
-
-/* line 48, phone.scss */
-#timeTrigger {
-  display: none;
-}
-
-#switch {
-  display: inline-block;
-  width: 3.375rem;
-  text-indent: -9999px;
-  background: url('../imgs/on.png') no-repeat no-repeat center left;
-  background-size: 3.375rem 2rem;
-  float: right;
-  margin-bottom: 0.3rem;
-}
-
-li:nth-child(1) {
-  height: 0rem;
-  border: 0;
-}
-li:nth-child(2) {
-  border: 0;
-  font-size: 4rem;
-  position: relative;
-}
-li:nth-child(2)  #xianshi {
-  position: absolute;
-  left: 30%;
-  color: black;
-}
-li:nth-child(2)  img {
-  width: 2rem;
-  height: 2rem;
-  margin-left: 5.8rem;
-}
-#down, #up{
-  text-indent: -9999px;
-  display: inline-block;
-  width: 4rem;
-  height: 2rem;
-  line-height: 2rem;
-  background-size: 4rem 2rem;
-  border-radius: 0.5rem;
-}
-#down {
-  background: orange url('../imgs/down.png') center center no-repeat no-repeat;
-}
-#up {
-  background: orange url('../imgs/up.png') center center no-repeat no-repeat;
 }

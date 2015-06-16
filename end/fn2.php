@@ -1,5 +1,8 @@
 <?php
-	@$fpw = fopen("wendu.txt", 'w');     //以覆盖方式写入wendu值
+	if (isset($_POST['id'])) {
+		$uuid = $_POST['id'];
+	}
+	@$fpw = fopen($uuid."wendu.txt", 'w');     //以覆盖方式写入wendu值
 	if (!$fpw) {
 		echo 0;
 		exit();
@@ -10,7 +13,7 @@
 	}
 	flock($fpw, LOCK_UN);
 	fclose($fpw);
-	@$fp = fopen("data.txt", 'r+'); //读取指令
+	@$fp = fopen($uuid."data.txt", 'r+'); //读取指令
 	if (!$fp) {
 		echo 0;
 		exit();

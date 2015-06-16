@@ -1,9 +1,12 @@
 <?php
+	if (isset($_POST['id'])) {
+		$uuid = $_POST['id'];
+	}
 	$flag = isset($_POST['flag']) && $_POST['flag'] == '0';
 	if ($flag) {
-		@$fp = fopen("wendu.txt", 'r'); 		//收到flag=0则以只读模式读取指令
+		@$fp = fopen($uuid."wendu.txt", 'r'); 		//收到flag=0则以只读模式读取指令
 	} else {
-		@$fp = fopen("wendu.txt", 'r+'); 	//反之以读写模式读取指令
+		@$fp = fopen($uuid."wendu.txt", 'r+'); 	//反之以读写模式读取指令
 	}
 	if (!$fp) {
 		echo 0;

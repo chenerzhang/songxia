@@ -8,6 +8,7 @@
 定时功能：time为定时器是否开启，offTime为定时时间
 */
 $(function() {
+	var uuid = '&' + window.location.href.split('?')[1];
 	var onOff = $('#switch')
 		, wendu = $('#wendu')
 		, feng = $('#feng')
@@ -21,12 +22,13 @@ $(function() {
 	check();                 																	//判断wendu和定时器
 	print();
 	setInterval(function() {                      												//每隔1S发送一次ajax，用来获取指令
-		$.post('/songxia/end/fn2.php', 'wendu=' + wendu.html(), function(response) {
+		$.post('/songxia/end/fn2.php', 'wendu=' + wendu.html() + uuid, function(response) {
 			console.log(response);
 			if (response !== '') {              												//指令不为空
 				var resarr = getData(response);         									//反格式化response eg:response='onOff=0&moshi=1' resarr=['onOff':0, 'moshi':1]
 				if ((data['onOff'] == 1) || (data['onOff'] == 0 && resarr['onOff'] == 1)) {    //若为开机状态或关机状态下收到开机指令才对data数组赋值
 					for (var i in resarr) {
+						console.log(resarr);
 						if (i != 'wendu')  data[i] = resarr[i];
 						else data[i] = Number(resarr[i]) + Number(data[i]);   			//wendu指令为加减法
 					}
@@ -88,7 +90,7 @@ $(function() {
 		return data;
 	}
 	function check() {														//检查温度是否合法以及定时器状态
-		data['wendu'] = data['wendu'] > 32 ? 32 : (data['wendu'] < 16 ? 16 : data['wendu']);
+		data['wendu'] = data['wendu'] > 30 ? 30 : (data['wendu'] < 16 ? 16 : data['wendu']);
 		if (data['offTime'] > 0) data['time'] = 1;								//定时时间大于0则开启定时器
 		else data['time'] = 0;												//否则关闭定时器
 		if (data['time'] == 0) data['offTime'] = timeFlag = 0;					//定时器关闭则定时时间和定时时间点清0

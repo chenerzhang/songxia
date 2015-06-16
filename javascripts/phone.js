@@ -8,10 +8,11 @@
 定时功能：offTime 0为关定时 正数为定时功能开启且是定时时间，以分钟为单位
 */
 $(function() {
+	var uuid = '&' + window.location.href.split('?')[1];
 	//sessionStorage.clear();
-	$.post('/songxia/end/fn4.php', {'passwd': sessionStorage.getItem('admin')}, function(res) {     //判断是否登陆，否则重定向到登陆界面
+	$.post('/songxia/end/fn4.php', 'passwd=' + sessionStorage.getItem('admin') + uuid, function(res) {     //判断是否登陆，否则重定向到登陆界面
 		if (res != 1) {
-			window.location = '/songxia/index.html';
+			window.location = '/songxia/index.html' +  '?' + uuid.split('&')[1];
 		}
 	});
 	var offTimeFlag = 0, offFlag = 0;   			//ofTimeFlag记录定时器开时定时时间，offFlag用来记录开启定时器的当前时间
@@ -25,6 +26,8 @@ $(function() {
 		onOff.html(onOff.html() === '开' ? '关' : '开');    //切换动作指令
 		send['onOff'] = (onOff.html() === '开' ? 0 : 1);    //保存指令
 		if (isOff()) send['offTime'] = 0;
+		if (onOff.html() === '开') this.style.backgroundImage = 'url("/songxia/imgs/on.png")';
+		else this.style.backgroundImage = 'url("/songxia/imgs/off.png")';
 	})
 	var wendu = 0;  							//初始化wendu = 0
 	var up = $('#up');
@@ -97,7 +100,7 @@ $(function() {
 		if (data != '') {   							//data不为空则去掉最后一个‘&’
 			if (data[data.length - 1] == '&') data=data.slice(0, data.length - 1);
 			console.log(data);
-			$.post('/songxia/end/fn1.php', data, function(response) {
+			$.post('/songxia/end/fn1.php', data + uuid, function(response) {
 				if (response != 0) {  				//若得到的response为1说明指令成功得到保存，则将send赋值为空数组，wendu赋值为0,
 					send = [];					//否则send和wendu值不变，以便下一次发送
 					wendu = 0;
@@ -140,7 +143,7 @@ $(function() {
 	}
 	function getWendu(flag) {             									//此函数用来读取空调发送给通信子网的wendu值，传入1时进行检测空调是否与通信子网相连
 		if (flag) guzhangFlagOld = guzhangFlag;                               		//传入1则记录上次guzhangFlag值，接收的wendu不存在时guzhangFlag=1,反之为0
-		$.post('/songxia/end/fn3.php', 'flag=' + flag, function(response) {
+		$.post('/songxia/end/fn3.php', 'flag=' + flag + uuid, function(response) {
 			if (!!response && Number(response) !== 0 && !isNaN(Number(response))) {
 				if (flag) guzhangFlag = 0;								//接受到的wendu值存在且合法  则guzhangFlag=0
 				if (guzhangFlag != guzhangFlagOld && flag == 1) {         //新旧值不相等说明空调与通信子网又重新连接了，故正常显示
