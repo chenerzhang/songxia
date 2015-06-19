@@ -11,12 +11,12 @@ $(function() {
                 window.location = '/songxia/phone.html' +  '?' + uuid.split('&')[1];
             } else {
                 passwd.val('');                                                            //清空重新输入
-                if (window.MyToast.myToast) window.MyToast.myToast('口令错误，请重新输入!');
+                if (!!window.MyToast) window.MyToast.myToast('口令错误，请重新输入!');
                 else alert('口令错误，请重新输入!');
             }
         });
     } else {
-        if (window.MyToast.myToast) window.MyToast.myToast('请输入口令！');
+        if (!!window.MyToast) window.MyToast.myToast('请输入口令！');
         else alert('请输入口令！');
     }
     });
