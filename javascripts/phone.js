@@ -20,7 +20,7 @@ $(function() {
 	var guzhangFlag = 0, guzhangFlagOld = 0;
 	var ul = $('ul'), p = $('p');               			//ul和p
 	p.hide();									//默认隐藏p
-	getWendu(1);								//查询空调和通信子网是否连接
+	//getWendu(1);								//查询空调和通信子网是否连接
 	var send = [];     							//发送的指令保存在这个数组里
 	var onImg = $('#onImg'), offImg = $('#offImg');
 	onImg.on('click', function() {
@@ -33,6 +33,8 @@ $(function() {
 		send['offTime'] = 0;
 		offImg.hide();
 		onImg.show();
+		guanji.hide();
+		time.html('开')
 	});
 	var onOff = $('#switch');
 	onOff.on('click', function(e) {    				//点击空调开关
@@ -52,7 +54,7 @@ $(function() {
 		if (isOn()) wendu--;   					//点击降温则wendu--
 	});
 	var xianshi = $('#xianshi');
-	getWendu();                    					//初始化wendu显示值
+	getWendu(0, xianshi);                    					//初始化wendu显示值
 	var feng = $('#feng');  						//扫风模式
 	feng.on('click', function() {
 		if (isOn()) {
@@ -145,12 +147,12 @@ $(function() {
 			if (offFlag !== 0) guanji.html((offTimeFlag - getM(new Date(), offFlag)) + '分钟');
 		}
 	}, 10000);
-	var wenduInterval = setInterval(function() {    						//1S收一次服务器端存储的wendu
-		getWendu(0);
-	}, 1000);
-	setInterval(function() {    											//10S收一次服务器端存储的wendu，传入参数1检测空调是否与通信子网相连
-		getWendu(1);
-	}, 20000);
+	// var wenduInterval = setInterval(function() {    						//1S收一次服务器端存储的wendu
+	// 	getWendu(0);
+	// }, 1000);
+	// setInterval(function() {    											//10S收一次服务器端存储的wendu，传入参数1检测空调是否与通信子网相连
+	// 	getWendu(1);
+	// }, 20000);
 	function isOn() {       												//判断是否是开机状态，是返回true， 否返回false
 		return onImg.css('display') === 'none';
 	}
@@ -165,9 +167,10 @@ $(function() {
 		hour -= dateMin.getHours();
 		return Number(hour) * 60 + Number(dateMax.getMinutes()) - Number(dateMin.getMinutes());
 	}
-	function getWendu(flag) {             									//此函数用来读取空调发送给通信子网的wendu值，传入1时进行检测空调是否与通信子网相连
+	function getWendu(i) {             									//此函数用来读取空调发送给通信子网的wendu值，传入1时进行检测空调是否与通信子网相连
+		var flag = 0;
 		if (flag) guzhangFlagOld = guzhangFlag;                               		//传入1则记录上次guzhangFlag值，接收的wendu不存在时guzhangFlag=1,反之为0
-		$.post('/songxia/end/fn3.php', 'flag=' + flag + uuid, function(response) {
+		$.post('/songxia/end/fn3.php', 'wendu='+ xianshi.html() +'&flag=' + flag + uuid, function(response) {
 			if (!!response && Number(response) !== 0 && !isNaN(Number(response))) {
 				if (flag) guzhangFlag = 0;								//接受到的wendu值存在且合法  则guzhangFlag=0
 				if (guzhangFlag != guzhangFlagOld && flag == 1) {         //新旧值不相等说明空调与通信子网又重新连接了，故正常显示
@@ -182,6 +185,7 @@ $(function() {
 					p.show();
 				}
 			}
+			getWendu(i, xianshi);
 		});
 	}
 })

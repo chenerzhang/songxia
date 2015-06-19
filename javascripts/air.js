@@ -21,27 +21,7 @@ $(function() {
 	var data = init();    																	//从cookie里读取关机或发生故障之前的历史记录
 	check();                 																	//判断wendu和定时器
 	print();
-	setInterval(function() {                      												//每隔1S发送一次ajax，用来获取指令
-		$.post('/songxia/end/fn2.php', 'wendu=' + wendu.html() + uuid, function(response) {
-			//console.log(response);
-			if (response !== '') {              												//指令不为空
-				var resarr = getData(response);         									//反格式化response eg:response='onOff=0&moshi=1' resarr=['onOff':0, 'moshi':1]
-				if ((data['onOff'] == 1) || (data['onOff'] == 0 && resarr['onOff'] == 1)) {    //若为开机状态或关机状态下收到开机指令才对data数组赋值
-					for (var i in resarr) {
-						//console.log(resarr);
-						if (i != 'wendu')  data[i] = resarr[i];
-						else data[i] = Number(resarr[i]) + Number(data[i]);   			//wendu指令为加减法
-					}
-					check();
-					print();
-				} else {
-					data['onOff'] = 0;
-					onOff.html("关");
-				}
-				setCookie(data);               				//保存data值到cookie里， 在发生故障时保存data数组值
-			}
-		})
-	}, 1000);
+	getDataFromServer();
 	setInterval(function() {   			 				//每隔30S进入   查看定时器是否开启，开启则打开定时功能
 		check();
 		print();
@@ -114,5 +94,31 @@ $(function() {
 		}
 		cookie = cookie.slice(0, cookie.length - 1);
 		document.cookie = cookie;
+	}
+	function getDataFromServer() {
+		$.ajax({
+			type: 'POST',
+			url: '/songxia/end/fn2.php',
+			data: 'wendu=' + wendu.html() + uuid,
+			success: function(response) {
+				if (response !== '') {              												//指令不为空
+					var resarr = getData(response);         									//反格式化response eg:response='onOff=0&moshi=1' resarr=['onOff':0, 'moshi':1]
+					if ((data['onOff'] == 1) || (data['onOff'] == 0 && resarr['onOff'] == 1)) {    //若为开机状态或关机状态下收到开机指令才对data数组赋值
+						for (var i in resarr) {
+							//console.log(resarr);
+							if (i != 'wendu')  data[i] = resarr[i];
+							else data[i] = Number(resarr[i]) + Number(data[i]);   			//wendu指令为加减法
+						}
+						check();
+						print();
+					} else {
+						data['onOff'] = 0;
+						onOff.html("关");
+					}
+					setCookie(data);               				//保存data值到cookie里， 在发生故障时保存data数组值
+				}
+				getDataFromServer();
+			}
+		});
 	}
 })
