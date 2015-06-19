@@ -9,6 +9,7 @@
 */
 $(function() {
 	var uuid = '&' + window.location.href.split('?')[1];
+	//console.log(uuid);
 	//sessionStorage.clear();
 	$.post('/songxia/end/fn4.php', 'passwd=' + sessionStorage.getItem('admin') + uuid, function(res) {     //判断是否登陆，否则重定向到登陆界面
 		if (res != 1) {
@@ -21,13 +22,25 @@ $(function() {
 	p.hide();									//默认隐藏p
 	getWendu(1);								//查询空调和通信子网是否连接
 	var send = [];     							//发送的指令保存在这个数组里
+	var onImg = $('#onImg'), offImg = $('#offImg');
+	onImg.on('click', function() {
+		send['onOff'] = 1;
+		onImg.hide();
+		offImg.show();
+	});
+	offImg.on('click', function() {
+		send['onOff'] = 0;
+		send['offTime'] = 0;
+		offImg.hide();
+		onImg.show();
+	});
 	var onOff = $('#switch');
 	onOff.on('click', function(e) {    				//点击空调开关
 		onOff.html(onOff.html() === '开' ? '关' : '开');    //切换动作指令
 		send['onOff'] = (onOff.html() === '开' ? 0 : 1);    //保存指令
 		if (isOff()) send['offTime'] = 0;
-		if (onOff.html() === '开') this.style.backgroundImage = 'url("/songxia/imgs/on.png")';
-		else this.style.backgroundImage = 'url("/songxia/imgs/off.png")';
+		if (onOff.html() === '开') this.style.backgroundPosition = '1.6875rem 0';
+		else this.style.backgroundPosition = '0 0';
 	})
 	var wendu = 0;  							//初始化wendu = 0
 	var up = $('#up');
@@ -70,22 +83,29 @@ $(function() {
 			} else {
 				offTimeFlag = send['offTime'] = 0;   //offTime为0，关闭定时器
 				timeTrigger.hide();  			//关闭定时器模块
+				guanji.hide();
 			}
 		}
 	});
 	var timeTrigger = $('#timeTrigger');  		//定时器模块
+	var guanji = $('#guanji');
 	var offTime = $('#offTime');
 	var offTimeCheck = $('#offTimeCheck');   	//确认定时时间
 	offTimeCheck.on('click', function() {
 		if (isOn()) {
 			if (time.html() === '关') {      			//只有在此状态下才能进入开启定时器
 				if (isNaN(Number(offTime.val())) || Math.floor(Number(offTime.val())) <= 0) {   //输入非法字符提示重新输入
-					alert('请重新输入定时时间');
+					if (window.MyToast.myToast) window.MyToast.myToast('请重新输入定时时间!');
+					else alert('请重新输入定时时间!');
 				} else {
+					guanji.html(Number(offTime.val()) + '分钟');
+					guanji.show();
 					offTimeFlag = send['offTime'] = Math.floor(Number(offTime.val())) || 0;  //保存定时器值
 					timeTrigger.hide();
 				}
 			}
+		} else {
+			guanji.hide();
 		}
 	})
 	var sendInterval = setInterval(function() {   //每隔1S则进入一遍此函数
@@ -99,7 +119,7 @@ $(function() {
 		}
 		if (data != '') {   							//data不为空则去掉最后一个‘&’
 			if (data[data.length - 1] == '&') data=data.slice(0, data.length - 1);
-			console.log(data);
+			//console.log(data);
 			$.post('/songxia/end/fn1.php', data + uuid, function(response) {
 				if (response != 0) {  				//若得到的response为1说明指令成功得到保存，则将send赋值为空数组，wendu赋值为0,
 					send = [];					//否则send和wendu值不变，以便下一次发送
@@ -114,11 +134,15 @@ $(function() {
 			offFlag = new Date();
 		}
 		if (offFlag !== 0) {   														//若offFlag记录了定时的时间点
-			console.log(offFlag.toLocaleString(), (new Date()).toLocaleString(), offTimeFlag);
+			//console.log(offFlag.toLocaleString(), (new Date()).toLocaleString(), offTimeFlag);
 			if (getM(new Date(), offFlag) >= offTimeFlag && offTimeFlag !== 0) { //如果从定时时间点到此时的时间大于定时时间
-				onOff.html('开');
+				offImg.hide();
+				onImg.show();
+				guanji.hide();
+				time.html('开');
 				offFlag = 0;   													//赋值offFlag为0
 			}
+			if (offFlag !== 0) guanji.html((offTimeFlag - getM(new Date(), offFlag)) + '分钟');
 		}
 	}, 10000);
 	var wenduInterval = setInterval(function() {    						//1S收一次服务器端存储的wendu
@@ -126,9 +150,9 @@ $(function() {
 	}, 1000);
 	setInterval(function() {    											//10S收一次服务器端存储的wendu，传入参数1检测空调是否与通信子网相连
 		getWendu(1);
-	}, 10000);
+	}, 20000);
 	function isOn() {       												//判断是否是开机状态，是返回true， 否返回false
-		return onOff.html() == '开' ? false : true;
+		return onImg.css('display') === 'none';
 	}
 	function isOff() {     													//判断是否是关机状态
 		return !isOn();

@@ -23,12 +23,12 @@ $(function() {
 	print();
 	setInterval(function() {                      												//每隔1S发送一次ajax，用来获取指令
 		$.post('/songxia/end/fn2.php', 'wendu=' + wendu.html() + uuid, function(response) {
-			console.log(response);
+			//console.log(response);
 			if (response !== '') {              												//指令不为空
 				var resarr = getData(response);         									//反格式化response eg:response='onOff=0&moshi=1' resarr=['onOff':0, 'moshi':1]
 				if ((data['onOff'] == 1) || (data['onOff'] == 0 && resarr['onOff'] == 1)) {    //若为开机状态或关机状态下收到开机指令才对data数组赋值
 					for (var i in resarr) {
-						console.log(resarr);
+						//console.log(resarr);
 						if (i != 'wendu')  data[i] = resarr[i];
 						else data[i] = Number(resarr[i]) + Number(data[i]);   			//wendu指令为加减法
 					}
@@ -45,7 +45,7 @@ $(function() {
 	setInterval(function() {   			 				//每隔30S进入   查看定时器是否开启，开启则打开定时功能
 		check();
 		print();
-	}, 30000);
+	}, 20000);
 	function init() {    									//从cookie里读取值，赋值给data数组
 		var data = [], cookie = '', index, val, ind;
 		if (!document.cookie) {							//第一次进入初始化cookie

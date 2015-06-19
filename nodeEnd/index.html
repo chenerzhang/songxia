@@ -3,7 +3,7 @@
 <head>
 	<meta name="viewport" content="width=320, initial-scale=1"/>
 	<meta charset="utf-8" />
-	<title>jsmpeg streaming</title>
+	<title>摄像模式</title>
 	<link rel="stylesheet" href="../styles/phone.css" />
 	<style type="text/css">
 		body {
@@ -32,15 +32,15 @@
 			<a href="http://www.apple.com/safari/">Safari</a> or Internet Explorer 10
 		</p>
 	</canvas>
-	<p><a href="/songxia/phone.html" style="text-decoration: none;color: orange;">返回</a></p>
+	<p><a href="/songxia/phone.html?id=1" style="text-decoration: none;color: orange;">返回</a></p>
 	<script type="text/javascript" src="jsmpg.js"></script>
 	<script type="text/javascript" src="../javascripts/zepto.min.js"></script>
 	<script type="text/javascript">
 		//ffmpeg avconv -s 640x480 -f video4linux2 -i /dev/video0 -f mpeg1video -b 800k -r 30 http://127.0.0.1:8082/123456/640/480/
 		// Show loading notice
-		$.post('/songxia/end/fn4.php', {'passwd': sessionStorage.getItem('admin')}, function(res) {   //判断是否登陆，否则重定向至登陆界面
+		$.post('/songxia/end/fn4.php', {'passwd': sessionStorage.getItem('admin'), 'id': 1}, function(res) {   //判断是否登陆，否则重定向至登陆界面
 			if (res != 1) {
-				window.location = '/songxia/index.html';
+				window.location = '/songxia/index.html?id=1';
 			}
 		});
 		var canvas = document.getElementById('videoCanvas');
@@ -49,7 +49,7 @@
 		ctx.fillText('Loading...', canvas.width/2-30, canvas.height/3);
 
 		// Setup the WebSocket connection and start the player
-		var client = new WebSocket( 'ws://192.168.0.180:8084/' );
+		var client = new WebSocket( 'ws://127.0.0.1:8084/' );
 		var player = new jsmpeg(client, {canvas:canvas});
 	</script>
 </body>
