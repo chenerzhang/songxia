@@ -16,6 +16,8 @@ $(function() {
 			window.location = '/songxia/index.html' +  '?' + uuid.split('&')[1];
 		}
 	});
+	var liLast = $('li:last-child');
+	if (!!window.MyToast) liLast.hide();
 	var offTimeFlag = 0, offFlag = 0;   			//ofTimeFlag记录定时器开时定时时间，offFlag用来记录开启定时器的当前时间
 	var guzhangFlag = 0, guzhangFlagOld = 0;
 	var ul = $('ul'), p = $('p');               			//ul和p
@@ -100,7 +102,7 @@ $(function() {
 					if (!!window.MyToast) window.MyToast.myToast('请重新输入定时时间!');
 					else alert('请重新输入定时时间!');
 				} else {
-					guanji.html(Number(offTime.val()) + '分钟');
+					guanji.html(Math.floor(Number(offTime.val())) + '分钟');
 					guanji.show();
 					offTimeFlag = send['offTime'] = Math.floor(Number(offTime.val())) || 0;  //保存定时器值
 					timeTrigger.hide();

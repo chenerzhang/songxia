@@ -27,7 +27,7 @@ socketServer.on('connection', function(socket) {
 	socket.send(streamHeader, {binary:true});
 
 	console.log( 'New WebSocket Connection ('+socketServer.clients.length+' total)' );
-	
+
 	socket.on('close', function(code, message){
 		console.log( 'Disconnected WebSocket ('+socketServer.clients.length+' total)' );
 	});
@@ -52,9 +52,9 @@ var streamServer = require('http').createServer( function(request, response) {
 	if( params[0] == STREAM_SECRET ) {
 		width = (params[1] || 320)|0;
 		height = (params[2] || 240)|0;
-		
+
 		console.log(
-			'Stream Connected: ' + request.socket.remoteAddress + 
+			'Stream Connected: ' + request.socket.remoteAddress +
 			':' + request.socket.remotePort + ' size: ' + width + 'x' + height
 		);
 		request.on('data', function(data){
@@ -63,7 +63,7 @@ var streamServer = require('http').createServer( function(request, response) {
 	}
 	else {
 		console.log(
-			'Failed Stream Connection: '+ request.socket.remoteAddress + 
+			'Failed Stream Connection: '+ request.socket.remoteAddress +
 			request.socket.remotePort + ' - wrong secret.'
 		);
 		response.end();
